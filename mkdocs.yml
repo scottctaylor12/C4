@@ -1,0 +1,15 @@
+site_name: C4
+theme: readthedocs
+nav:
+  - Home: index.md
+  - Overview:
+    - What is Extism?: extism/extism.md
+  - C2 Channels:
+    - GitHub Gist:
+      - Overview: c2/gist/overview.md
+      - Client: c2/gist/client.md
+      - Server: c2/gist/server.md
+    - Microsoft Teams: 
+      - Overview: c2/ms-teams/overview.md
+    - Slack:
+      - Overview: c2/

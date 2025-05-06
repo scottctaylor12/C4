@@ -1,0 +1,7 @@
+[package]
+name = "rust-host"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+extism = "1.10.0"
