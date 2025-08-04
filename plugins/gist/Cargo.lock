@@ -39,15 +39,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 
 [[package]]
-name = "c4"
-version = "0.1.0"
-dependencies = [
- "extism-pdk",
- "serde",
- "wasi",
-]
-
-[[package]]
 name = "either"
 version = "1.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -123,6 +114,15 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "gist"
+version = "0.1.0"
+dependencies = [
+ "extism-pdk",
+ "serde",
+ "wasi",
 ]
 
 [[package]]
