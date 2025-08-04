@@ -1,5 +1,7 @@
-# AWS S3 Setup
+# AWS S3: Setup
 
+A WebAssembly (WASM) plugin for secure command and control (C2) communication using AWS S3. 
+This plugin enables bidirectional communication between C2 servers and agents through S3 bucket operations.
 This guide covers the complete AWS S3 configuration required for the C2 communication plugin.
 
 ## Prerequisites

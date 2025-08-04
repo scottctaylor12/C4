@@ -1,4 +1,4 @@
-# Usage
+# AWS S3: Usage
 
 ## Plugin Overview
 
@@ -26,7 +26,7 @@ The plugin requires:
 * System time accuracy (within 15 minutes of AWS servers)
 
 
-## API Reference
+## Schema Reference
 
 ### Send Action
 

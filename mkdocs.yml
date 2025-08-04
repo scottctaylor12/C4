@@ -11,8 +11,8 @@ nav:
     - Rust: examples/rust.md
   - Plugins:
     - AWS S3:
-      - Overview: plugins/aws-s3/overview.md
       - Setup: plugins/aws-s3/setup.md
       - Usage: plugins/aws-s3/usage.md
     - GitHub Gist:
-      - Overview: plugins/gist/overview.md
+      - Setup: plugins/gist/setup.md
+      - Usage: plugins/gist/usage.md
