@@ -1,3 +1,0 @@
-# Slack
-
-COMING SOON!

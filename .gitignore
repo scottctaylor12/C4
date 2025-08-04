@@ -1,7 +1,9 @@
 ### project specific
 build.sh
+setup.ps1
 *.wasm
 target
+notes.txt
 
 ### VS Code
 .vscode/*
@@ -109,3 +111,17 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# Python Environments
+.env
+.envrc
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Node.js Tools for Visual Studio
+.ntvs_analysis.dat
+node_modules/

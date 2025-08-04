@@ -2,14 +2,17 @@ site_name: C4
 theme: readthedocs
 nav:
   - Home: index.md
-  - Overview:
-    - What is Extism?: extism/extism.md
-  - C2 Channels:
+  - Overview: overview.md
+  - Examples:
+    - Go: examples/go.md
+    - .NET: examples/net-core.md
+    - NodeJS: examples/nodejs.md
+    - Python: examples/python.md
+    - Rust: examples/rust.md
+  - Plugins:
+    - AWS S3:
+      - Overview: plugins/aws-s3/overview.md
+      - Setup: plugins/aws-s3/setup.md
+      - Usage: plugins/aws-s3/usage.md
     - GitHub Gist:
-      - Overview: c2/gist/overview.md
-      - Client: c2/gist/client.md
-      - Server: c2/gist/server.md
-    - Microsoft Teams: 
-      - Overview: c2/ms-teams/overview.md
-    - Slack:
-      - Overview: c2/
+      - Overview: plugins/gist/overview.md
