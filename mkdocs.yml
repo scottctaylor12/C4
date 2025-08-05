@@ -1,0 +1,18 @@
+site_name: C4
+theme: readthedocs
+nav:
+  - Home: index.md
+  - Overview: overview.md
+  - Examples:
+    - Go: examples/go.md
+    - .NET: examples/net-core.md
+    - NodeJS: examples/nodejs.md
+    - Python: examples/python.md
+    - Rust: examples/rust.md
+  - Plugins:
+    - AWS S3:
+      - Setup: plugins/aws-s3/setup.md
+      - Usage: plugins/aws-s3/usage.md
+    - GitHub Gist:
+      - Setup: plugins/gist/setup.md
+      - Usage: plugins/gist/usage.md
