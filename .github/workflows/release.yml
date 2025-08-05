@@ -1,0 +1,88 @@
+# .github/workflows/release.yml
+name: Build and Release Extism Plugins
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0, v2.1.3, etc.
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Extract version from tag
+      id: extract_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: wasm32-wasip1
+
+    - name: Cache Rust dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-
+
+    - name: Build Gist plugin
+      run: |
+        cd plugins/gist
+        cargo build --release --target wasm32-wasip1
+        cp target/wasm32-wasip1/release/*.wasm ../../gist.wasm
+
+    - name: Build AWS S3 plugin
+      run: |
+        cd plugins/aws-s3
+        cargo build --release --target wasm32-wasip1
+        cp target/wasm32-wasip1/release/*.wasm ../../aws-s3.wasm
+
+    - name: Verify builds
+      run: |
+        ls -la *.wasm
+        file gist.wasm
+        file aws-s3.wasm
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.extract_version.outputs.VERSION }}
+        release_name: Release ${{ steps.extract_version.outputs.VERSION }}
+        body: "C4 plugins ${{ steps.extract_version.outputs.VERSION }}"
+        draft: false
+        prerelease: false
+
+    - name: Upload Gist Plugin
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./gist.wasm
+        asset_name: gist.wasm
+        asset_content_type: application/wasm
+
+    - name: Upload AWS S3 Plugin
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./aws-s3.wasm
+        asset_name: aws-s3.wasm
+        asset_content_type: application/wasm
