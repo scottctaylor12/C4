@@ -14,4 +14,5 @@ To get started, check out the documentation at <https://scottctaylor12.github.io
 | Plugin       | Developer       |
 | ------------ | --------------- |
 | AWS S3       | @scottctaylor12 |
+| Confluence   | @scottctaylor12 |
 | GitHub Gist  | @scottctaylor12 |
