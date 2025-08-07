@@ -52,11 +52,18 @@ jobs:
         cargo build --release --target wasm32-wasip1
         cp target/wasm32-wasip1/release/*.wasm ../../aws-s3.wasm
 
+    - name: Build Confluence plugin
+      run: |
+        cd plugins/confluence
+        cargo build --release --target wasm32-wasip1
+        cp target/wasm32-wasip1/release/*.wasm ../../confluence.wasm
+
     - name: Verify builds
       run: |
         ls -la *.wasm
         file gist.wasm
         file aws-s3.wasm
+        file confluence.wasm
 
     - name: Create Release
       run: |
@@ -64,6 +71,7 @@ jobs:
           --title "Release ${{ steps.extract_version.outputs.VERSION }}" \
           --notes "" \
           gist.wasm \
-          aws-s3.wasm
+          aws-s3.wasm \
+          confluence.wasm
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
