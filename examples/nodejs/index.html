@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>NodeJS - C4</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "NodeJS";
+        var mkdocs_page_input_path = "examples\\nodejs.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> C4
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../overview/">Overview</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Examples</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../go/">Go</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../net-core/">.NET</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">NodeJS</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#example">Example</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Python</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rust/">Rust</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Plugins</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >AWS S3</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/aws-s3/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/aws-s3/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Confluence</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/confluence/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/confluence/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >GitHub Gist</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/gist/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/gist/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">C4</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Examples</li>
+      <li class="breadcrumb-item active">NodeJS</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="nodejs-host">Node.js Host</h1>
+<p>For team servers and/or agents written in Node.js, a simplistic example is included that can be used as a rough template.</p>
+<h2 id="usage">Usage</h2>
+<ol>
+<li>Install the Extism node package</li>
+</ol>
+<pre><code>npm install @extism/extism
+</code></pre>
+<ol>
+<li>
+<p>The example below shows how to read a plugin from disk. The example reads a file called <code>c4.wasm</code> (a C4 plugin) and loads it.</p>
+</li>
+<li>
+<p>Run nodejs program <code>nodejs ./main.js</code></p>
+</li>
+</ol>
+<p>Thorough documentation on the Javascript Extism package can be found at <a href="https://github.com/extism/js-sdk">https://github.com/extism/js-sdk</a></p>
+<p>The full example can be found at <a href="https://github.com/scottctaylor12/C4/examples/nodejs/">https://github.com/scottctaylor12/C4/examples/nodejs/</a></p>
+<h2 id="example">Example</h2>
+<pre><code class="language-javascript">const fs = require('fs');
+const extism = require('@extism/extism');
+
+// Define the C4Output interface
+class C4Output {
+    constructor() {
+        this.success = false;
+        this.status = '';
+        this.messages = [];
+    }
+}
+
+async function main() {
+    plugin = await load_plugin();
+
+    while (true) {
+        try {
+            // This agent has an ID of 12345
+            // Receive messages from AWS S3 bucket for agent 12345
+            const recMsg = JSON.stringify({
+                action: &quot;receive&quot;,
+                params: {
+                    agent_id: &quot;12345&quot;,
+                    access_key: &quot;AKIAXXXXXXXXXXX&quot;,
+                    secret_key: &quot;SECRET&quot;,
+                    region: &quot;us-east-1&quot;,
+                    bucket: &quot;c4-testing&quot;
+                }
+            });
+
+            const recOutput = await plugin.call(&quot;c4&quot;, recMsg);
+            const c4OutputRec = JSON.parse(recOutput.text());
+            if (c4OutputRec.success &amp;&amp; c4OutputRec.messages &amp;&amp; c4OutputRec.messages.length &gt; 0) {
+                // Process the received messages
+                for (const message of c4OutputRec.messages) {
+                    // Here you can add your logic to process each message
+                    console.log(&quot;Processing message:&quot;, message);
+                }
+            }
+        } 
+        catch (pluginError) {
+            console.error(&quot;Plugin call error:&quot;, pluginError);
+        }
+
+        // Let's pretend we received a &quot;whoami&quot; message
+        // Send a response back to the S3 bucket with the &quot;server&quot; as the recipient
+        try {
+            const message = &quot;scottctaylor12&quot;; // realistically, the message is probably a format specific to your C2
+            const sendMsg = JSON.stringify({
+                action: &quot;send&quot;,
+                params: {
+                    agent_id: &quot;server&quot;,
+                    message: message,
+                    access_key: &quot;AKIAXXXXXXXXXXX&quot;,
+                    secret_key: &quot;SECRET&quot;,
+                    region: &quot;us-east-1&quot;,
+                    bucket: &quot;c4-testing&quot;
+                }
+            });
+
+            const sendOutput = await plugin.call(&quot;c4&quot;, sendMsg);
+            const c4OutputSend = JSON.parse(sendOutput.text());
+            if (c4OutputSend.success) {
+                console.log(&quot;Message sent successfully:&quot;, c4OutputSend.status);
+            } else {
+                console.error(&quot;Failed to send message:&quot;, c4OutputSend.status);
+            }
+        }
+        catch (sendError) {
+            console.error(&quot;Error sending message:&quot;, sendError);
+        }
+
+        // Sleep for 5 seconds
+        await new Promise(resolve =&gt; setTimeout(resolve, 5000));
+    }
+}
+
+async function load_plugin() {
+    const pluginPath = 'c4.wasm';
+    if (!fs.existsSync(pluginPath)) {
+        throw new Error(`Plugin file not found: ${pluginPath}`);
+    }
+    return extism.createPlugin(pluginPath, {
+        runInWorker: true,
+        allowedHosts: [&quot;*&quot;],
+        useWasi: true,
+    });
+}
+
+main().catch(err =&gt; {
+    console.error(&quot;Plugin error:&quot;, err);
+});
+
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../net-core/" class="btn btn-neutral float-left" title=".NET"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../python/" class="btn btn-neutral float-right" title="Python">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../net-core/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../python/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

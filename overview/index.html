@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Overview - C4</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Overview";
+        var mkdocs_page_input_path = "overview.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> C4
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Overview</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#problem">Problem</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#solution">Solution</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#webassembly-wasm">WebAssembly (WASM)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#extism">Extism</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#planting-c4">Planting C4</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Examples</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../examples/go/">Go</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../examples/net-core/">.NET</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../examples/nodejs/">NodeJS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../examples/python/">Python</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../examples/rust/">Rust</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Plugins</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >AWS S3</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../plugins/aws-s3/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../plugins/aws-s3/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Confluence</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../plugins/confluence/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../plugins/confluence/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >GitHub Gist</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../plugins/gist/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../plugins/gist/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">C4</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="c4-cross-compatible-command-and-control">C4: Cross Compatible Command and Control</h1>
+<p>Let's learn a little more about the project and what is going on here.</p>
+<h2 id="problem">Problem</h2>
+<p>Different C2 frameworks offer different external C2 options.
+Oftentimes, these external C2 options are implemented in a way that is highly specific to the framework using language-specific SDK's and message formats.
+That said, if red team operators need to communicate over a specific site (AWS S3 for example) then they are limited to certain C2 frameworks. If the operator is developer-savy, they <em>could</em> re-invent the wheel and implement the external C2 in their framework of choice, but that's tedious...</p>
+<h2 id="solution">Solution</h2>
+<p>To ease the burden of implementing external C2 both team server and agent side, the C4 was developed!
+C4 is a collection of plugins that handle sending and receiving messages over various trusted sites.
+These "plugins" are compiled WebAssembly modules that can be loaded into numerous programming languages (hence, the "Cross Compatible" in the project name).</p>
+<h2 id="webassembly-wasm">WebAssembly (WASM)</h2>
+<p>The C4 plugins are written in Rust.
+However, no need to fear, no Rust knowledge is required to use this project.
+The plugins are compiled to a WebAssembly module (.wasm files) that can be loaded by numerous programming languages including but not limited to Go, Rust, and Python.
+That said, to use the plugins, a WebAssembly runtime must be loaded into the C2 framework and/or agent in order to use these modules.</p>
+<h2 id="extism">Extism</h2>
+<p>Behind the scenes, the <a href="https://extism.org/">Extism</a> project is what makes this all possible.
+Extism is a cross-language framework for building and running WebAssembly.
+Extism has <a href="https://extism.org/docs/concepts/pdk">Plugin Development Kits (PDK)</a> that allow developers to write WASM modules in multiple languages. 
+I chose to write the plugins in Rust to keep the compiled module sizes smaller.
+Additionally, the Rust language is heavily supported in the WASM community.
+Extism also maintains <a href="https://extism.org/docs/concepts/host-sdk">"Host SDKs"</a> which allow users to take a compiled Extism plugin (.wasm file) and run it across multiple lanugages.
+This is perfect for all you malware developers out there writing in various programming languages!</p>
+<h2 id="planting-c4">Planting C4</h2>
+<p>The C4 project contains numerous External C2 modules that can be used in your software.
+Read on to find your language(s) of choice and start planting some C4!</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../examples/go/" class="btn btn-neutral float-right" title="Go">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../examples/go/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

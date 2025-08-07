@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Rust - C4</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Rust";
+        var mkdocs_page_input_path = "examples\\rust.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> C4
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../overview/">Overview</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Examples</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../go/">Go</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../net-core/">.NET</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../nodejs/">NodeJS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Python</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Rust</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#example">Example</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Plugins</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >AWS S3</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/aws-s3/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/aws-s3/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Confluence</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/confluence/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/confluence/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >GitHub Gist</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/gist/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/gist/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">C4</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Examples</li>
+      <li class="breadcrumb-item active">Rust</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="rust">Rust</h1>
+<p>For team servers and/or agents written in Rust, an example is included below that can be used as a rough template.</p>
+<h2 id="usage">Usage</h2>
+<ol>
+<li>Add the necessary dependencies to your Rust project's Cargo.toml file</li>
+</ol>
+<pre><code>[dependencies]
+extism = &quot;1.10.0&quot;
+serde = { version = &quot;1.0&quot;, features = [&quot;derive&quot;] }
+serde_json = &quot;1.0&quot;
+</code></pre>
+<ol>
+<li>
+<p>Place C4 plugin (.wasm file) in <code>src/</code> folder and name it <code>c4.wasm</code> (name used in example). The c4 module will be compiled into the rust binary.</p>
+</li>
+<li>
+<p>Compile the software using Rust's standard cargo build:</p>
+</li>
+</ol>
+<pre><code>cargo build --release
+</code></pre>
+<p>Thorough documentation on the Python Extism SDK package can be found at <a href="https://github.com/extism/extism/tree/main/runtime">https://github.com/extism/extism/tree/main/runtime</a></p>
+<p>The full example can be found at <a href="https://github.com/scottctaylor12/C4/examples/rust/">https://github.com/scottctaylor12/C4/examples/rust/</a></p>
+<h2 id="example">Example</h2>
+<pre><code class="language-rust">use extism::*;
+use serde::{Deserialize, Serialize};
+use std::thread;
+use std::time::Duration;
+
+#[derive(Deserialize, Serialize)]
+struct C4Output {
+    success: bool,
+    status: String,
+    messages: Option&lt;Vec&lt;String&gt;&gt;,
+}
+
+fn main() {
+    let mut plugin: Plugin = init();
+
+    loop {
+        // Receive messages from AWS S3 bucket
+        let rec_msg = r#&quot;{&quot;action&quot;:&quot;receive&quot;,&quot;params&quot;:{&quot;agent_id&quot;:&quot;12345&quot;,&quot;access_key&quot;:&quot;AKIAAAAAAAAAAA&quot;,&quot;secret_key&quot;:&quot;SECRET&quot;,&quot;region&quot;:&quot;us-east-1&quot;,&quot;bucket&quot;:&quot;c4-testing&quot;}}&quot;#;
+
+        match plugin.call::&lt;&amp;str, Vec&lt;u8&gt;&gt;(&quot;c4&quot;, rec_msg) {
+            Ok(out) =&gt; {
+                match serde_json::from_slice::&lt;C4Output&gt;(&amp;out) {
+                    Ok(c4_output) =&gt; {
+                        if let Some(ref messages) = c4_output.messages {
+                            if !messages.is_empty() &amp;&amp; c4_output.success {
+                                // Process the received messages
+                                println!(&quot;{:?}&quot;, messages);
+                            }
+                        }
+                    }
+                    Err(e) =&gt; {
+                        eprintln!(&quot;Failed to parse JSON response: {}&quot;, e);
+                    }
+                }
+            }
+            Err(e) =&gt; {
+                eprintln!(&quot;Plugin call failed: {}&quot;, e);
+            }
+        }
+
+        // let's pretend we received a &quot;whoami&quot; message
+        // Send a response back to the S3 bucket with the &quot;server&quot; as the recipient
+        let message = &quot;scottctaylor12&quot;; // realistically, the message is probably a format specific to your C2
+        let send_msg = format!(
+            r#&quot;{{&quot;action&quot;:&quot;send&quot;,&quot;params&quot;:{{&quot;agent_id&quot;:&quot;12345&quot;,&quot;message&quot;:&quot;{}&quot;,&quot;access_key&quot;:&quot;AKIAAAAAAAAAAA&quot;,&quot;secret_key&quot;:&quot;SECRET&quot;,&quot;region&quot;:&quot;us-east-1&quot;,&quot;bucket&quot;:&quot;c4-testing&quot;}}}}&quot;#,
+            message
+        );
+
+        match plugin.call::&lt;&amp;str, Vec&lt;u8&gt;&gt;(&quot;c4&quot;, &amp;send_msg) {
+            Ok(out) =&gt; {
+                match serde_json::from_slice::&lt;C4Output&gt;(&amp;out) {
+                    Ok(c4_output) =&gt; {
+                        if c4_output.success {
+                            println!(&quot;Message sent successfully&quot;);
+                        } else {
+                            println!(&quot;Failed to send message: {}&quot;, c4_output.status);
+                        }
+                    }
+                    Err(e) =&gt; {
+                        eprintln!(&quot;Failed to parse JSON response: {}&quot;, e);
+                    }
+                }
+            }
+            Err(e) =&gt; {
+                eprintln!(&quot;Plugin call failed: {}&quot;, e);
+            }
+        }
+
+        thread::sleep(Duration::from_secs(10)); // typical sleep time
+    }
+}
+
+fn init() -&gt; Plugin {
+    let wasm_bytes = include_bytes!(&quot;c4.wasm&quot;);
+    let wasm = Wasm::data(wasm_bytes);
+    let manifest = Manifest::new([wasm])
+        .with_allowed_hosts(vec![&quot;*&quot;.to_string()].into_iter());
+    let plugin = Plugin::new(&amp;manifest, [], true).unwrap();
+    return plugin;
+}
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../python/" class="btn btn-neutral float-left" title="Python"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../plugins/aws-s3/setup/" class="btn btn-neutral float-right" title="Setup">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../python/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../plugins/aws-s3/setup/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

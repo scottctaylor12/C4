@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Go - C4</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Go";
+        var mkdocs_page_input_path = "examples\\go.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> C4
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../overview/">Overview</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Examples</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Go</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#example">Example</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../net-core/">.NET</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../nodejs/">NodeJS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Python</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rust/">Rust</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Plugins</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >AWS S3</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/aws-s3/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/aws-s3/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Confluence</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/confluence/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/confluence/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >GitHub Gist</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/gist/setup/">Setup</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../plugins/gist/usage/">Usage</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">C4</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Examples</li>
+      <li class="breadcrumb-item active">Go</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="go">Go</h1>
+<p>For team servers and/or agents written in Go, a simplistic example is included that can be used as a rough template.</p>
+<h2 id="usage">Usage</h2>
+<ol>
+<li>Install Go dependencies</li>
+</ol>
+<pre><code>go get github.com/extism/go-sdk
+go get github.com/tetratelabs/wazero
+</code></pre>
+<ol>
+<li>
+<p>The C4 plugin (.wasm file) should be placed in the same folder as the code as it will be compiled directly into the Go binary.</p>
+</li>
+<li>
+<p>Compile the code using the standard Go binary</p>
+</li>
+</ol>
+<pre><code>go build
+</code></pre>
+<p>Thorough documentation on using the Extism Go SDK can be found at <a href="https://github.com/extism/go-sdk">https://github.com/extism/go-sdk</a></p>
+<p>Below is an example of using a C4 plugin in Go. See the full example at: <a href="https://github.com/scottctaylor12/C4/examples/go/">https://github.com/scottctaylor12/C4/examples/go/</a></p>
+<h2 id="example">Example</h2>
+<pre><code class="language-go">package main
+
+import (
+    &quot;context&quot;
+    &quot;encoding/json&quot;
+    &quot;fmt&quot;
+    &quot;time&quot;
+
+    _ &quot;embed&quot;
+
+    extism &quot;github.com/extism/go-sdk&quot;
+    &quot;github.com/tetratelabs/wazero&quot;
+)
+
+//go:embed c4.wasm
+var wasmBytes []byte
+
+type C4Output struct {
+    Success  bool     `json:&quot;success&quot;`
+    Status   string   `json:&quot;status&quot;`
+    Messages []string `json:&quot;messages&quot;`
+}
+
+func main() {
+
+    /*
+        Example usage of the AWS S3 C4 plugin.
+        Implementation details will vary based on your C2 and/or agent
+    */
+
+    // For extra logging while debugging
+    //extism.SetLogLevel(extism.LogLevelDebug)
+
+    // load C4 plugin
+    plugin := initialize()
+
+    for {
+
+        // Receive messages from AWS S3 bucket
+        rec_msg := &quot;{\&quot;action\&quot;:\&quot;receive\&quot;,\&quot;params\&quot;:{\&quot;agent_id\&quot;:\&quot;12345\&quot;,\&quot;access_key\&quot;:\&quot;AKIAAAAAAAAAAAAA\&quot;,\&quot;secret_key\&quot;:\&quot;SECRET\&quot;,\&quot;region\&quot;:\&quot;us-east-1\&quot;,\&quot;bucket\&quot;:\&quot;c4-testing\&quot;}}&quot;
+        exit, out, err := plugin.Call(&quot;c4&quot;, []byte(rec_msg))
+        if err != nil {
+            fmt.Println(err)
+            fmt.Println(&quot;Exit Code: &quot; + string(int(exit)))
+        }
+        var c4_output C4Output
+        _ = json.Unmarshal(out, &amp;c4_output)
+        fmt.Println(c4_output.Messages)
+        if (len(c4_output.Messages) &gt; 0) &amp;&amp; c4_output.Success {
+            // Process the received messages
+            fmt.Println(c4_output.Messages)
+        }
+
+        // let's pretend we received a &quot;whoami&quot; message
+        // Send a response back to the S3 bucket with the &quot;server&quot; as the recipient
+        var message string = &quot;scottctaylor12&quot; // realistically, the message is probably a format specific to your C2
+        var send_msg string = fmt.Sprintf(&quot;{\&quot;action\&quot;:\&quot;send\&quot;,\&quot;params\&quot;:{\&quot;agent_id\&quot;:\&quot;12345\&quot;,\&quot;message\&quot;:\&quot;%s\&quot;,\&quot;access_key\&quot;:\&quot;AKIAAAAAAAAAAAAA\&quot;,\&quot;secret_key\&quot;:\&quot;SECRET\&quot;,\&quot;region\&quot;:\&quot;us-east-1\&quot;,\&quot;bucket\&quot;:\&quot;c4-testing\&quot;}}&quot;, message)
+        exit, out, err = plugin.Call(&quot;c4&quot;, []byte(send_msg))
+        if err != nil {
+            fmt.Println(err)
+            fmt.Println(&quot;Exit Code: &quot; + string(int(exit)))
+        }
+        _ = json.Unmarshal(out, &amp;c4_output)
+        if c4_output.Success {
+            fmt.Println(&quot;Message sent successfully&quot;)
+        } else {
+            fmt.Println(&quot;Failed to send message: &quot; + c4_output.Status)
+        }
+
+        time.Sleep(10 * time.Second) // typical sleep time
+    }
+}
+
+func initialize() *extism.Plugin {
+    manifest := extism.Manifest{
+        Wasm: []extism.Wasm{
+            extism.WasmData{
+                Data: wasmBytes,
+            },
+        },
+        AllowedHosts: []string{
+            &quot;*&quot;,
+        },
+    }
+    ctx := context.Background()
+    moduleConfig := wazero.NewModuleConfig().
+        WithSysWalltime().
+        WithSysNanotime().
+        WithSysNanosleep()
+    config := extism.PluginConfig{
+        ModuleConfig: moduleConfig,
+        EnableWasi:   true,
+    }
+    plugin, err := extism.NewPlugin(ctx, manifest, config, []extism.HostFunction{})
+    if err != nil {
+        fmt.Println(&quot;Failed to initialize plugin&quot;)
+    }
+    return plugin
+}
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../overview/" class="btn btn-neutral float-left" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../net-core/" class="btn btn-neutral float-right" title=".NET">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../overview/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../net-core/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
