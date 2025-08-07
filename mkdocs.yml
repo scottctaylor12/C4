@@ -13,6 +13,9 @@ nav:
     - AWS S3:
       - Setup: plugins/aws-s3/setup.md
       - Usage: plugins/aws-s3/usage.md
+    - Confluence:
+      - Setup: plugins/confluence/setup.md
+      - Usage: plugins/confluence/usage.md
     - GitHub Gist:
       - Setup: plugins/gist/setup.md
       - Usage: plugins/gist/usage.md
