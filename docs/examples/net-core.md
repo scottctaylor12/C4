@@ -22,7 +22,7 @@ dotnet build software.csproj
 
 More thorough documentation can be found at <https://github.com/extism/dotnet-sdk>
 
-Below is an example of using a C4 plugin in .NET Core. See the full example at: <https://github.com/scottctaylor12/C4/examples/net-core>
+Below is an example of using a C4 plugin in .NET Core. See the full example at: <https://github.com/scottctaylor12/C4/tree/main/examples/net-core>
 
 ## Example
 

@@ -13,7 +13,7 @@ python3 -m pip install extism
 
 Thorough documentation on the Python Extism SDK package can be found at <https://github.com/extism/python-sdk>
 
-The full example can be found at <https://github.com/scottctaylor12/C4/examples/python/>
+The full example can be found at <https://github.com/scottctaylor12/C4/tree/main/examples/python/>
 
 ## Examples
 

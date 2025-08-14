@@ -23,7 +23,7 @@ cargo build --release
 
 Thorough documentation on the Python Extism SDK package can be found at <https://github.com/extism/extism/tree/main/runtime>
 
-The full example can be found at <https://github.com/scottctaylor12/C4/examples/rust/>
+The full example can be found at <https://github.com/scottctaylor12/C4/tree/main/examples/rust/>
 
 ## Example
 

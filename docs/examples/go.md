@@ -19,7 +19,7 @@ go build
 
 Thorough documentation on using the Extism Go SDK can be found at <https://github.com/extism/go-sdk>
 
-Below is an example of using a C4 plugin in Go. See the full example at: <https://github.com/scottctaylor12/C4/examples/go/>
+Below is an example of using a C4 plugin in Go. See the full example at: <https://github.com/scottctaylor12/C4/tree/main/examples/go/>
 
 ## Example
 

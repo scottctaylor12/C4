@@ -15,7 +15,7 @@ npm install @extism/extism
 
 Thorough documentation on the Javascript Extism package can be found at <https://github.com/extism/js-sdk>
 
-The full example can be found at <https://github.com/scottctaylor12/C4/examples/nodejs/>
+The full example can be found at <https://github.com/scottctaylor12/C4/tree/main/examples/nodejs/>
 
 ## Example
 
