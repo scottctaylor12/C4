@@ -36,9 +36,9 @@ def main():
         # Receive messages from AWS S3 bucket for agent 12345
         rec_msg = json.dumps({
             "action": "receive",
+            "agent_id": "12345",
             "params": {
-                "agent_id": "12345",
-                "access_key": "AKIAXXXXXXXXXXXXX",
+                "access_key": "AKIAXXXXXXXXXXX",
                 "secret_key": "SECRET",
                 "region": "us-east-1",
                 "bucket": "c4-testing"
@@ -64,10 +64,10 @@ def main():
 
         send_msg = json.dumps({
             "action": "send",
+            "agent_id": "server",
+            "message": message,
             "params": {
-                "agent_id": "server",
-                "message": message,
-                "access_key": "AKIAXXXXXXXXXXXXX",
+                "access_key": "AKIAXXXXXXXXXXX",
                 "secret_key": "SECRET",
                 "region": "us-east-1",
                 "bucket": "c4-testing"

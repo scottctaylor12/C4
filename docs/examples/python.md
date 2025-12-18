@@ -13,7 +13,7 @@ python3 -m pip install extism
 
 Thorough documentation on the Python Extism SDK package can be found at <https://github.com/extism/python-sdk>
 
-The full example can be found at <https://github.com/scottctaylor12/C4/examples/python/>
+The full example can be found at <https://github.com/scottctaylor12/C4/tree/main/examples/python/>
 
 ## Examples
 
@@ -56,8 +56,8 @@ def main():
         # Receive messages from AWS S3 bucket for agent 12345
         rec_msg = json.dumps({
             "action": "receive",
+            "agent_id": "12345",
             "params": {
-                "agent_id": "12345",
                 "access_key": "AKIAXXXXXXXXXXXXX",
                 "secret_key": "SECRET",
                 "region": "us-east-1",
@@ -84,9 +84,9 @@ def main():
 
         send_msg = json.dumps({
             "action": "send",
+            "agent_id": "server",
+            "message": message,
             "params": {
-                "agent_id": "server",
-                "message": message,
                 "access_key": "AKIAXXXXXXXXXXXXX",
                 "secret_key": "SECRET",
                 "region": "us-east-1",

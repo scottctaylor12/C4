@@ -35,19 +35,19 @@ Used to send a message by adding a file to a GitHub Gist
 ```json
 {
   "action": "send",
+  "agent_id": "string",      // Target agent identifier
+  "message": "string",       // Command or payload content
   "params": {
-    "agent_id": "string",      // Target agent identifier
-    "api_key":"string",        // GitHub Personal Access Token (PAT)
-    "message": "string",       // Command or payload content 
+    "api_key": "string"      // GitHub Personal Access Token (PAT)
   }
 }
 ```
 
 **Parameters**
 
-* `api_key` GitHub Personal Access Token to programmatically interact with GitHub Gist
 * `agent_id` Unique identifier for target receiver ("server" or the agent id)
 * `message` Command text or payload content (UTF-8 encoded, 1-10MB recommended)
+* `params.api_key` GitHub Personal Access Token to programmatically interact with GitHub Gist
 
 **Example Success Response**
 
@@ -65,10 +65,10 @@ Used to send a message by adding a file to a GitHub Gist
 
 ```json
 {
-  "action": "receive", 
+  "action": "receive",
+  "agent_id": "string",   // This agent's identifier
   "params": {
-    "agent_id": "string",   // This agent's identifier
-    "api_key": "string",    // GitHub Personal Access Token (PAT)
+    "api_key": "string"   // GitHub Personal Access Token (PAT)
   }
 }
 ```
@@ -76,7 +76,7 @@ Used to send a message by adding a file to a GitHub Gist
 **Parameters**
 
 * `agent_id` messages of unique id to read ("server" or the agent id)
-* `api_key` GitHub Personal Access Token to programmatically interact with GitHub Gist
+* `params.api_key` GitHub Personal Access Token to programmatically interact with GitHub Gist
 
 **Success Response (with commands)**
 

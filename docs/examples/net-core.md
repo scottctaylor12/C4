@@ -22,7 +22,7 @@ dotnet build software.csproj
 
 More thorough documentation can be found at <https://github.com/extism/dotnet-sdk>
 
-Below is an example of using a C4 plugin in .NET Core. See the full example at: <https://github.com/scottctaylor12/C4/examples/net-core>
+Below is an example of using a C4 plugin in .NET Core. See the full example at: <https://github.com/scottctaylor12/C4/tree/main/examples/net-core>
 
 ## Example
 
@@ -64,7 +64,7 @@ class Program
             // Receive messages from AWS S3 bucket for the agent with ID "12345"
             try
             {
-                string recMsg = "{\"action\":\"receive\",\"params\":{\"agent_id\":\"12345\",\"access_key\":\"AKIAXXXXXXXXXXXX\",\"secret_key\":\"SECRET\",\"region\":\"REGION\",\"bucket\":\"BUCKET-NAME\"}}";
+                string recMsg = "{\"action\":\"receive\",\"agent_id\":\"12345\",\"params\":{\"access_key\":\"AKIAXXXXXXXXXXXX\",\"secret_key\":\"SECRET\",\"region\":\"REGION\",\"bucket\":\"BUCKET-NAME\"}}";
                 var result = plugin.Call("c4", Encoding.UTF8.GetBytes(recMsg));
 
                 string output = Encoding.UTF8.GetString(result);
@@ -94,7 +94,7 @@ class Program
             try
             {
                 string message = "scottctaylor12"; // realistically, the message is probably a format specific to your C2
-                string sendMsg = $"{{\"action\":\"send\",\"params\":{{\"agent_id\":\"server\",\"message\":\"{message}\",\"access_key\":\"AKIAXXXXXXXXXXXX\",\"secret_key\":\"SECRET\",\"region\":\"REGION\",\"bucket\":\"BUCKET-NAME\"}}}}";
+                string sendMsg = $"{{\"action\":\"send\",\"agent_id\":\"server\",\"message\":\"{message}\",\"params\":{{\"access_key\":\"AKIAXXXXXXXXXXXX\",\"secret_key\":\"SECRET\",\"region\":\"REGION\",\"bucket\":\"BUCKET-NAME\"}}}}";
 
                 var sendResult = plugin.Call("c4", Encoding.UTF8.GetBytes(sendMsg));
 

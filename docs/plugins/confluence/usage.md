@@ -36,25 +36,25 @@ The new Confluence page will be created in the specified `space` in a folder nam
 ```json
 {
     "action": "send",
+    "agent_id": "12345",                            // target agent identifier
+    "message": "test message",                      // message to send
     "params": {
-        "agent_id": "12345",                            // target agent identifier
-        "api_token": "SECRET",                          // Atlassian API Key
-        "base_url": "https://<DOMAIN>.atlassian.net",   // URL of Confluence site
-        "space": "TEST",                                // Confluence documentation space
-        "email": "example@example.com",                 // Atlassian username (email)
-        "message": "test message"                       // message to send    
+        "api_token": "SECRET",                      // Atlassian API Key
+        "base_url": "https://<DOMAIN>.atlassian.net", // URL of Confluence site
+        "space": "TEST",                            // Confluence documentation space
+        "email": "example@example.com"              // Atlassian username (email)
     }
 }
 ```
 
 **Parameters**
 
-* `api_token` Atlassian API Token to programmatically interact with Confluence
 * `agent_id` Unique identifier for target receiver ("server" or the agent id)
-* `base_url` URL of the Confluence site to send/receive messages to/from
-* `space` Confluence documentation space to create and delete documentation from
-* `email` Atlassian username in the form of an email address (owner of the API Token)
 * `message` Command text or payload content (UTF-8 encoded, 1-10MB recommended)
+* `params.api_token` Atlassian API Token to programmatically interact with Confluence
+* `params.base_url` URL of the Confluence site to send/receive messages to/from
+* `params.space` Confluence documentation space to create and delete documentation from
+* `params.email` Atlassian username in the form of an email address (owner of the API Token)
 
 **Example Success Response**
 
@@ -69,7 +69,7 @@ The new Confluence page will be created in the specified `space` in a folder nam
 
 ### Receive Action
 
-Used to receive new messages by searching for documentation in Confluence in the `agent_id`'s folder. 
+Used to receive new messages by searching for documentation in Confluence in the `agent_id`'s folder.
 After reading the message from the Confluence, the documentation page is deleted.
 
 **Input Schema**
@@ -77,23 +77,23 @@ After reading the message from the Confluence, the documentation page is deleted
 ```json
 {
     "action": "receive",
+    "agent_id": "12345",                            // target agent identifier
     "params": {
-        "agent_id": "12345",                            // target agent identifier
-        "api_token": "SECRET",                          // Atlassian API Key
-        "base_url": "https://<DOMAIN>.atlassian.net",   // URL of Confluence site
-        "space": "TEST",                                // Confluence documentation space
-        "email": "example@example.com",                 // Atlassian username (email)
+        "api_token": "SECRET",                      // Atlassian API Key
+        "base_url": "https://<DOMAIN>.atlassian.net", // URL of Confluence site
+        "space": "TEST",                            // Confluence documentation space
+        "email": "example@example.com"              // Atlassian username (email)
     }
 }
 ```
 
 **Parameters**
 
-* `api_token` Atlassian API Token to programmatically interact with Confluence
 * `agent_id` Unique identifier for target receiver ("server" or the agent id)
-* `base_url` URL of the Confluence site to send/receive messages to/from
-* `space` Confluence documentation space to create and delete documentation from
-* `email` Atlassian username in the form of an email address (owner of the API Token)
+* `params.api_token` Atlassian API Token to programmatically interact with Confluence
+* `params.base_url` URL of the Confluence site to send/receive messages to/from
+* `params.space` Confluence documentation space to create and delete documentation from
+* `params.email` Atlassian username in the form of an email address (owner of the API Token)
 
 **Success Response (with message)**
 

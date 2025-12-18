@@ -18,7 +18,7 @@ fn main() {
 
     loop {
         // Receive messages from AWS S3 bucket
-        let rec_msg = r#"{"action":"receive","params":{"agent_id":"12345","access_key":"AKIAAAAAAAAAAA","secret_key":"SECRET","region":"us-east-1","bucket":"c4-testing"}}"#;
+        let rec_msg = r#"{"action":"receive","agent_id":"12345","params":{"access_key": "AKIAXXXXXXXXXXX","secret_key": "SECRET","region": "us-east-1","bucket": "c4-testing"}}"#;
         
         match plugin.call::<&str, Vec<u8>>("c4", rec_msg) {
             Ok(out) => {
@@ -45,7 +45,7 @@ fn main() {
         // Send a response back to the S3 bucket with the "server" as the recipient
         let message = "scottctaylor12"; // realistically, the message is probably a format specific to your C2
         let send_msg = format!(
-            r#"{{"action":"send","params":{{"agent_id":"12345","message":"{}","access_key":"AKIAAAAAAAAAAA","secret_key":"SECRET","region":"us-east-1","bucket":"c4-testing"}}}}"#,
+            r#"{{"action":"send", "agent_id":"12345","message":"{}","params":{{"access_key": "AKIAXXXXXXXXXXX","secret_key": "SECRET","region": "us-east-1","bucket": "c4-testing"}}}}"#,
             message
         );
         

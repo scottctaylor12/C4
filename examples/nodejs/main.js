@@ -19,8 +19,8 @@ async function main() {
             // Receive messages from AWS S3 bucket for agent 12345
             const recMsg = JSON.stringify({
                 action: "receive",
+                agent_id: "12345",
                 params: {
-                    agent_id: "12345",
                     access_key: "AKIAXXXXXXXXXXX",
                     secret_key: "SECRET",
                     region: "us-east-1",
@@ -48,9 +48,9 @@ async function main() {
             const message = "scottctaylor12"; // realistically, the message is probably a format specific to your C2
             const sendMsg = JSON.stringify({
                 action: "send",
+                agent_id: "server",
+                message: message,
                 params: {
-                    agent_id: "server",
-                    message: message,
                     access_key: "AKIAXXXXXXXXXXX",
                     secret_key: "SECRET",
                     region: "us-east-1",

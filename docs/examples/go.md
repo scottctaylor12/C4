@@ -19,7 +19,7 @@ go build
 
 Thorough documentation on using the Extism Go SDK can be found at <https://github.com/extism/go-sdk>
 
-Below is an example of using a C4 plugin in Go. See the full example at: <https://github.com/scottctaylor12/C4/examples/go/>
+Below is an example of using a C4 plugin in Go. See the full example at: <https://github.com/scottctaylor12/C4/tree/main/examples/go/>
 
 ## Example
 
@@ -63,7 +63,7 @@ func main() {
 	for {
 
 		// Receive messages from AWS S3 bucket
-		rec_msg := "{\"action\":\"receive\",\"params\":{\"agent_id\":\"12345\",\"access_key\":\"AKIAAAAAAAAAAAAA\",\"secret_key\":\"SECRET\",\"region\":\"us-east-1\",\"bucket\":\"c4-testing\"}}"
+		rec_msg := "{\"action\":\"receive\",\"agent_id\":\"12345\",\"params\":{\"access_key\":\"AKIAAAAAAAAAAAAA\",\"secret_key\":\"SECRET\",\"region\":\"us-east-1\",\"bucket\":\"c4-testing\"}}"
 		exit, out, err := plugin.Call("c4", []byte(rec_msg))
 		if err != nil {
 			fmt.Println(err)
@@ -80,7 +80,7 @@ func main() {
 		// let's pretend we received a "whoami" message
 		// Send a response back to the S3 bucket with the "server" as the recipient
 		var message string = "scottctaylor12" // realistically, the message is probably a format specific to your C2
-		var send_msg string = fmt.Sprintf("{\"action\":\"send\",\"params\":{\"agent_id\":\"12345\",\"message\":\"%s\",\"access_key\":\"AKIAAAAAAAAAAAAA\",\"secret_key\":\"SECRET\",\"region\":\"us-east-1\",\"bucket\":\"c4-testing\"}}", message)
+		var send_msg string = fmt.Sprintf("{\"action\":\"send\",\"agent_id\":\"12345\",\"message\":\"%s\",\"params\":{\"access_key\":\"AKIAAAAAAAAAAAAA\",\"secret_key\":\"SECRET\",\"region\":\"us-east-1\",\"bucket\":\"c4-testing\"}}", message)
 		exit, out, err = plugin.Call("c4", []byte(send_msg))
 		if err != nil {
 			fmt.Println(err)

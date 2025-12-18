@@ -30,20 +30,20 @@ The plugin requires:
 
 ### Send Action
 
-Used to send a message to the S3 bucket. Messages 
+Used to send a message to the S3 bucket. Messages
 
 **Input Schema**
 
 ```json
 {
   "action": "send",
+  "agent_id": "string",      // Target agent identifier
+  "message": "string",       // Command or payload content
   "params": {
-    "agent_id": "string",      // Target agent identifier
-    "message": "string",       // Command or payload content  
-    "access_key": "string",    // AWS Access Key ID
-    "secret_key": "string",    // AWS Secret Access Key
-    "region": "string",        // AWS region (e.g. "us-east-1")
-    "bucket": "string",        // S3 bucket name
+    "access_key": "string",  // AWS Access Key ID
+    "secret_key": "string",  // AWS Secret Access Key
+    "region": "string",      // AWS region (e.g. "us-east-1")
+    "bucket": "string"       // S3 bucket name
   }
 }
 ```
@@ -52,10 +52,10 @@ Used to send a message to the S3 bucket. Messages
 
 * `agent_id` Unique identifier for target receiver ("server" or the agent id)
 * `message` Command text or payload content (UTF-8 encoded, 1-10MB recommended)
-* `access_key` AWS Access Key ID from IAM user
-* `secret_key` AWS Secret Access Key from IAM user
-* `region` AWS region where bucket is located
-* `bucket` S3 bucket name for C2 communications
+* `params.access_key` AWS Access Key ID from IAM user
+* `params.secret_key` AWS Secret Access Key from IAM user
+* `params.region` AWS region where bucket is located
+* `params.bucket` S3 bucket name for C2 communications
 
 **Example Success Response**
 
@@ -83,13 +83,13 @@ Used to send a message to the S3 bucket. Messages
 
 ```json
 {
-  "action": "receive", 
+  "action": "receive",
+  "agent_id": "string",      // This agent's identifier
   "params": {
-    "agent_id": "string",      // This agent's identifier
-    "access_key": "string",    // AWS Access Key ID
-    "secret_key": "string",    // AWS Secret Access Key
-    "region": "string",        // AWS region
-    "bucket": "string",        // S3 bucket name
+    "access_key": "string",  // AWS Access Key ID
+    "secret_key": "string",  // AWS Secret Access Key
+    "region": "string",      // AWS region
+    "bucket": "string"       // S3 bucket name
   }
 }
 ```
@@ -97,10 +97,10 @@ Used to send a message to the S3 bucket. Messages
 **Parameters**
 
 * `agent_id` messages of unique id to read ("server" or the agent id)
-* `access_key` AWS Access Key ID from IAM user
-* `secret_key` AWS Secret Access Key from IAM user
-* `region` AWS region where bucket is located
-* `bucket` S3 bucket name for C2 communications
+* `params.access_key` AWS Access Key ID from IAM user
+* `params.secret_key` AWS Secret Access Key from IAM user
+* `params.region` AWS region where bucket is located
+* `params.bucket` S3 bucket name for C2 communications
 
 **Success Response (with commands)**
 
