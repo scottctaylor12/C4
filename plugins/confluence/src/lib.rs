@@ -5,17 +5,18 @@ use wasi::{clock_time_get, CLOCKID_REALTIME};
 #[derive(Serialize, Deserialize)]
 struct PluginInput {
     action: String,
+    agent_id: String,
+    #[serde(default)]
+    message: Option<String>,
     params: ConfluenceConfig,
 }
 
 #[derive(Serialize, Deserialize)]
 struct ConfluenceConfig {
-    agent_id: String,
     api_token: String,
     base_url: String,
     space: String,
     email: String,
-    message: Option<String>, // For send action
 }
 
 #[derive(Serialize, Deserialize)]
@@ -90,41 +91,41 @@ pub fn c4(input: String) -> FnResult<String> {
         .map_err(|e| WithReturnCode::new(Error::msg(format!("Invalid input format: {} | Input was: '{}'", e, input)), 1))?;
 
     match plugin_input.action.as_str() {
-        "send" => handle_send_action(plugin_input.params),
-        "receive" => handle_receive_action(plugin_input.params),
+        "send" => handle_send_action(plugin_input.agent_id, plugin_input.message, plugin_input.params),
+        "receive" => handle_receive_action(plugin_input.agent_id, plugin_input.params),
         _ => Err(WithReturnCode::new(Error::msg(format!("Unknown action: {}", plugin_input.action)), 1)),
     }
 }
 
-fn handle_send_action(config: ConfluenceConfig) -> FnResult<String> {
-    let message = config.message.as_ref()
+fn handle_send_action(agent_id: String, message: Option<String>, config: ConfluenceConfig) -> FnResult<String> {
+    let msg = message.as_ref()
         .ok_or_else(|| WithReturnCode::new(Error::msg("Missing 'message' field for send action"), 1))?;
 
-    info!("Sending message to Confluence space: {}, agent_id: {}", config.space, config.agent_id);
+    info!("Sending message to Confluence space: {}, agent_id: {}", config.space, agent_id);
 
     // Step 1: Check if agent_id folder (parent page) exists
-    let agent_folder_id = match find_agent_folder(&config)? {
+    let agent_folder_id = match find_agent_folder(&agent_id, &config)? {
         Some(id) => {
             info!("Found existing agent folder with ID: {}", id);
             id
         }
         None => {
             info!("Agent folder not found, creating new one");
-            create_agent_folder(&config)?
+            create_agent_folder(&agent_id, &config)?
         }
     };
 
     // Step 2: Create a new page under the agent folder with current epoch time as title
     let epoch_time = get_current_epoch_time();
     let page_title = epoch_time.to_string();
-    
+
     info!("Creating new message page with title: {}", page_title);
-    
-    create_message_page(&config, &agent_folder_id, &page_title, message)?;
+
+    create_message_page(&config, &agent_folder_id, &page_title, msg)?;
 
     let response = PluginResponse {
         success: true,
-        status: format!("Successfully posted message to Confluence space '{}' under agent folder '{}'", config.space, config.agent_id),
+        status: format!("Successfully posted message to Confluence space '{}' under agent folder '{}'", config.space, agent_id),
         messages: None,
     };
 
@@ -132,17 +133,17 @@ fn handle_send_action(config: ConfluenceConfig) -> FnResult<String> {
         .map_err(|e| WithReturnCode::new(Error::msg(format!("Failed to serialize response: {}", e)), 1))
 }
 
-fn handle_receive_action(config: ConfluenceConfig) -> FnResult<String> {
-    info!("Receiving messages from Confluence space: {}, agent_id: {}", config.space, config.agent_id);
+fn handle_receive_action(agent_id: String, config: ConfluenceConfig) -> FnResult<String> {
+    info!("Receiving messages from Confluence space: {}, agent_id: {}", config.space, agent_id);
 
     // Step 1: Find the agent folder
-    let agent_folder_id = match find_agent_folder(&config)? {
+    let agent_folder_id = match find_agent_folder(&agent_id, &config)? {
         Some(id) => {
             info!("Found agent folder with ID: {}", id);
             id
         }
         None => {
-            info!("No agent folder found for agent_id: {}", config.agent_id);
+            info!("No agent folder found for agent_id: {}", agent_id);
             let response = PluginResponse {
                 success: true,
                 status: "No messages found - agent folder does not exist".to_string(),
@@ -233,17 +234,17 @@ fn handle_receive_action(config: ConfluenceConfig) -> FnResult<String> {
         .map_err(|e| WithReturnCode::new(Error::msg(format!("Failed to serialize response: {}", e)), 1))
 }
 
-fn find_agent_folder(config: &ConfluenceConfig) -> FnResult<Option<String>> {
+fn find_agent_folder(agent_id: &str, config: &ConfluenceConfig) -> FnResult<Option<String>> {
     // Ensure base_url includes /wiki if not already present
     let base_url = if config.base_url.ends_with("/wiki") {
         config.base_url.clone()
     } else {
         format!("{}/wiki", config.base_url)
     };
-    
+
     let url = format!("{}/rest/api/content", base_url);
     // Use URL encoding for the title to handle special characters
-    let encoded_title = url_encode(&config.agent_id);
+    let encoded_title = url_encode(agent_id);
     let query_params = format!("?spaceKey={}&title={}&type=page&limit=10", config.space, encoded_title);
     let full_url = format!("{}{}", url, query_params);
     
@@ -293,12 +294,12 @@ fn find_agent_folder(config: &ConfluenceConfig) -> FnResult<Option<String>> {
             // Look for exact title match in results
             for result in search_result.results {
                 info!("Checking page: '{}' with ID: {}", result.title, result.id);
-                if result.title == config.agent_id {
+                if result.title == agent_id {
                     info!("Found exact match for agent folder: {} with ID: {}", result.title, result.id);
                     return Ok(Some(result.id));
                 }
             }
-            info!("No exact title match found for agent_id: {}", config.agent_id);
+            info!("No exact title match found for agent_id: {}", agent_id);
             Ok(None)
         }
         Err(parse_err) => {
@@ -320,7 +321,7 @@ fn find_agent_folder(config: &ConfluenceConfig) -> FnResult<Option<String>> {
                                 item.get("title").and_then(|v| v.as_str())
                             ) {
                                 info!("Found page in manual parsing: '{}' with ID: {}", title, id);
-                                if title == config.agent_id {
+                                if title == agent_id {
                                     info!("Manual parsing found exact match: {} with ID: {}", title, id);
                                     return Ok(Some(id.to_string()));
                                 }
@@ -339,25 +340,25 @@ fn find_agent_folder(config: &ConfluenceConfig) -> FnResult<Option<String>> {
     }
 }
 
-fn create_agent_folder(config: &ConfluenceConfig) -> FnResult<String> {
+fn create_agent_folder(agent_id: &str, config: &ConfluenceConfig) -> FnResult<String> {
     // Ensure base_url includes /wiki if not already present
     let base_url = if config.base_url.ends_with("/wiki") {
         config.base_url.clone()
     } else {
         format!("{}/wiki", config.base_url)
     };
-    
+
     let url = format!("{}/rest/api/content", base_url);
-    
+
     let create_request = CreatePageRequest {
         page_type: "page".to_string(),
-        title: config.agent_id.clone(),
+        title: agent_id.to_string(),
         space: ConfluenceSpace {
             key: config.space.clone(),
         },
         body: ConfluenceBody {
             storage: ConfluenceStorage {
-                value: format!("<p>Agent folder for: {}</p>", config.agent_id),
+                value: format!("<p>Agent folder for: {}</p>", agent_id),
                 representation: "storage".to_string(),
             },
         },
@@ -394,7 +395,7 @@ fn create_agent_folder(config: &ConfluenceConfig) -> FnResult<String> {
         if body.contains("A page with this title already exists") || body.contains("A page already exists with the same TITLE") {
             info!("Page already exists, trying to find existing agent folder");
             // Try to find the existing page again with a more thorough search
-            return find_existing_agent_folder_by_search(config);
+            return find_existing_agent_folder_by_search(agent_id, config);
         } else if body.contains("errorMessage") {
             return Err(WithReturnCode::new(Error::msg(format!("Network/Connection error creating agent folder. Check --allow-host setting and Confluence URL. Response: {}", body)), 1));
         } else if body.is_empty() {
@@ -410,7 +411,7 @@ fn create_agent_folder(config: &ConfluenceConfig) -> FnResult<String> {
         // Check if this is a "page already exists" error
         if body.contains("A page with this title already exists") || body.contains("A page already exists with the same TITLE") {
             info!("Page already exists (400 error), trying to find existing agent folder");
-            return find_existing_agent_folder_by_search(config);
+            return find_existing_agent_folder_by_search(agent_id, config);
         }
     }
 
@@ -535,14 +536,14 @@ fn get_current_epoch_time() -> u64 {
     }
 }
 
-fn find_existing_agent_folder_by_search(config: &ConfluenceConfig) -> FnResult<String> {
+fn find_existing_agent_folder_by_search(agent_id: &str, config: &ConfluenceConfig) -> FnResult<String> {
     // More comprehensive search when we know the page exists
     let base_url = if config.base_url.ends_with("/wiki") {
         config.base_url.clone()
     } else {
         format!("{}/wiki", config.base_url)
     };
-    
+
     let url = format!("{}/rest/api/content", base_url);
     // Search without title filter first, then filter in results
     let query_params = format!("?spaceKey={}&type=page&limit=50", config.space);
@@ -577,14 +578,14 @@ fn find_existing_agent_folder_by_search(config: &ConfluenceConfig) -> FnResult<S
         // Look for exact title match in results
         for result in search_result.results {
             info!("Found page: '{}' with ID: {}", result.title, result.id);
-            if result.title == config.agent_id {
+            if result.title == agent_id {
                 info!("Found existing agent folder: {} with ID: {}", result.title, result.id);
                 return Ok(result.id);
             }
         }
     }
 
-    Err(WithReturnCode::new(Error::msg(format!("Could not find existing agent folder '{}' even though creation failed with 'already exists' error", config.agent_id)), 1))
+    Err(WithReturnCode::new(Error::msg(format!("Could not find existing agent folder '{}' even though creation failed with 'already exists' error", agent_id)), 1))
 }
 
 fn url_encode(input: &str) -> String {

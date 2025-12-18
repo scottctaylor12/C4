@@ -10,18 +10,19 @@ type HmacSha256 = Hmac<Sha256>;
 #[derive(Serialize, Deserialize)]
 struct PluginInput {
     action: String,
+    agent_id: String,
+    #[serde(default)]
+    message: Option<String>,
     params: S3Config,
 }
 
 #[derive(Serialize, Deserialize)]
 struct S3Config {
-    agent_id: String,
     access_key: String,
     secret_key: String,
     region: String,
     bucket: String,
     timestamp: Option<String>, // Optional timestamp override
-    message: Option<String>, // For send action
 }
 
 #[derive(Serialize, Deserialize)]
@@ -60,14 +61,14 @@ pub fn c4(input: String) -> FnResult<String> {
         .map_err(|e| WithReturnCode::new(Error::msg(format!("Invalid input format: {} | Input was: '{}'", e, input)), 1))?;
 
     match plugin_input.action.as_str() {
-        "receive" => handle_receive_action(plugin_input.params),
-        "send" => handle_send_action(plugin_input.params),
+        "receive" => handle_receive_action(plugin_input.agent_id, plugin_input.params),
+        "send" => handle_send_action(plugin_input.agent_id, plugin_input.message, plugin_input.params),
         _ => Err(WithReturnCode::new(Error::msg(format!("Unknown action: {}", plugin_input.action)), 1)),
     }
 }
 
-fn handle_send_action(config: S3Config) -> FnResult<String> {
-    let message = config.message.as_ref()
+fn handle_send_action(agent_id: String, message: Option<String>, config: S3Config) -> FnResult<String> {
+    let msg = message.as_ref()
         .ok_or_else(|| WithReturnCode::new(Error::msg("Missing 'message' field for send action"), 1))?;
 
     // Create timestamp for AWS signature and filename
@@ -78,16 +79,16 @@ fn handle_send_action(config: S3Config) -> FnResult<String> {
     // Generate nanosecond timestamp for filename
     let filename_timestamp = get_nanosecond_timestamp();
     let filename = format!("{}.txt", filename_timestamp);
-    
+
     // AWS S3 endpoint for uploading file
     let host = format!("{}.s3.{}.amazonaws.com", config.bucket, config.region);
-    let path = format!("/{}/{}", config.agent_id, filename);
+    let path = format!("/{}/{}", agent_id, filename);
     let url = format!("https://{}{}", host, path);
-    
-    info!("Uploading file to: s3://{}/{}/{}", config.bucket, config.agent_id, filename);
+
+    info!("Uploading file to: s3://{}/{}/{}", config.bucket, agent_id, filename);
 
     // Convert message to bytes (UTF-8)
-    let message_bytes = message.as_bytes();
+    let message_bytes = msg.as_bytes();
     let payload_hash = format!("{:x}", Sha256::digest(message_bytes));
 
     // Create canonical request for PUT operation
@@ -136,7 +137,7 @@ fn handle_send_action(config: S3Config) -> FnResult<String> {
     // Success response
     let response = PluginResponse {
         success: true,
-        status: format!("Successfully uploaded message to s3://{}/{}/{}", config.bucket, config.agent_id, filename),
+        status: format!("Successfully uploaded message to s3://{}/{}/{}", config.bucket, agent_id, filename),
         messages: None,
     };
 
@@ -170,19 +171,19 @@ fn create_canonical_request_for_put(host: &str, path: &str, timestamp: &str, pay
     )
 }
 
-fn handle_receive_action(config: S3Config) -> FnResult<String> {
+fn handle_receive_action(agent_id: String, config: S3Config) -> FnResult<String> {
 
     // AWS S3 endpoint with agent_id as prefix parameter
     let host = format!("{}.s3.{}.amazonaws.com", config.bucket, config.region);
     let path = "/"; // Root path
-    let prefix = format!("{}/", config.agent_id); // Use agent_id as prefix
-    
+    let prefix = format!("{}/", agent_id); // Use agent_id as prefix
+
     // URL encode the prefix value for AWS signature calculation
     let encoded_prefix = url_encode(&prefix);
     let query_string = format!("prefix={}", encoded_prefix);
     let url = format!("https://{}{}?{}", host, path, query_string);
-    
-    info!("Listing files in S3 with prefix: s3://{}/{}/", config.bucket, config.agent_id);
+
+    info!("Listing files in S3 with prefix: s3://{}/{}/", config.bucket, agent_id);
 
     // Create timestamp for AWS signature
     let timestamp = config.timestamp.clone()

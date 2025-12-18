@@ -21,19 +21,15 @@ struct Output {
 #[derive(serde::Deserialize)]
 struct Input {
     action: Action,
-    params: json::Value,
+    agent_id: String,
+    #[serde(default)]
+    message: Option<String>,
+    params: Params,
 }
 
 #[derive(serde::Deserialize)]
-struct ReceiveParams {
+struct Params {
     api_key: String,
-    agent_id: String,
-}
-
-struct SendParams {
-    api_key: String,
-    agent_id: String,
-    message: String,
 }
 
 #[derive(serde::Deserialize)]
@@ -63,8 +59,8 @@ struct Gist {
 pub fn c4(raw_input: String) -> FnResult<Json<Output>> {
     let input: Input = json::from_str(&raw_input).unwrap();
     let result: Result<Output, Error> = match input.action {
-        Action::Receive => receive(input.params),
-        Action::Send => send(input.params),
+        Action::Receive => receive(input.agent_id.clone(), input.params),
+        Action::Send => send(input.agent_id.clone(), input.message.clone(), input.params),
         Action::Custom(action) => Ok(Output {success: false, status: format!("Invalid action: {}", action), messages: None}),
     };
 
@@ -78,22 +74,16 @@ pub fn c4(raw_input: String) -> FnResult<Json<Output>> {
     }
 }
 
-fn receive(params: json::Value) -> Result<Output, Error> {
+fn receive(agent_id: String, params: Params) -> Result<Output, Error> {
     let mut tasks: Vec<String> = Vec::new();
 
-    // extract params from input
-    let p: ReceiveParams = ReceiveParams {
-        api_key: params["api_key"].as_str().ok_or(extism_pdk::Error::msg("Missing or invalid api_key".to_string()))?.to_string(),
-        agent_id: params["agent_id"].as_str().ok_or(extism_pdk::Error::msg("Missing or invalid agent_id".to_string()))?.to_string(),
-    };
-    
     // get all gists
-    let gists: Vec<Gist> = get_gists(p.api_key.clone())?;
+    let gists: Vec<Gist> = get_gists(params.api_key.clone())?;
 
     info!("Fetched {} gists:", gists.len());
     for gist in gists.iter() {
         // check if gist exists for this agent
-        if gist.description == p.agent_id {
+        if gist.description == agent_id {
             let files: &json::Value = &gist.files;
             // check if files exist in agent's gist
             if let Some(map) = files.as_object() {
@@ -102,7 +92,7 @@ fn receive(params: json::Value) -> Result<Output, Error> {
                     // get content of file in gist
                     let req: HttpRequest = HttpRequest::new(format!("{}", value["raw_url"].as_str().unwrap().to_string()))
                         .with_header("Accept", "application/vnd.github+json")
-                        .with_header("Authorization", format!("Bearer {}", p.api_key))
+                        .with_header("Authorization", format!("Bearer {}", params.api_key))
                         .with_header("X-GitHub-Api-Version", "2022-11-28");
                     let resp: HttpResponse = http::request::<()>(&req, None)
                         .unwrap();
@@ -121,7 +111,7 @@ fn receive(params: json::Value) -> Result<Output, Error> {
                         method: Some("PATCH".to_string()),
                         headers: BTreeMap::from([
                             ("Accept".to_string(), "application/vnd.github+json".to_string()),
-                            ("Authorization".to_string(), format!("Bearer {}", p.api_key)),
+                            ("Authorization".to_string(), format!("Bearer {}", params.api_key)),
                             ("X-GitHub-Api-Version".to_string(), "2022-11-28".to_string()),
                         ]),
                     };
@@ -148,25 +138,20 @@ fn receive(params: json::Value) -> Result<Output, Error> {
     }
 }
 
-fn send(_params: json::Value) -> Result<Output, Error> {
-    // extract params from input
-    let p: SendParams = SendParams {
-        api_key: _params["api_key"].as_str().ok_or(extism_pdk::Error::msg("Missing or invalid api_key".to_string()))?.to_string(),
-        agent_id: _params["agent_id"].as_str().ok_or(extism_pdk::Error::msg("Missing or invalid agent_id".to_string()))?.to_string(),
-        message: _params["message"].as_str().ok_or(extism_pdk::Error::msg("Missing or invalid message".to_string()))?.to_string(),
-    };
+fn send(agent_id: String, message: Option<String>, params: Params) -> Result<Output, Error> {
+    let msg = message.ok_or(extism_pdk::Error::msg("Missing message for send action".to_string()))?;
 
     let nodes_raw: String = var::get("nodes")?.unwrap_or_else(|| "{}".to_string());
     let mut nodes: HashMap<String, String> = json::from_str(&nodes_raw)
         .unwrap_or_else(|_| HashMap::new());
 
     // if the agent is not in the map, update map with current gists
-    if !nodes.contains_key(&p.agent_id) {
-        let gists: Vec<Gist> = get_gists(p.api_key.clone())?;
+    if !nodes.contains_key(&agent_id) {
+        let gists: Vec<Gist> = get_gists(params.api_key.clone())?;
         for gist in gists.iter() {
             nodes.insert(gist.description.clone(), gist.id.clone());
         }
-        if !nodes.contains_key(&p.agent_id) {
+        if !nodes.contains_key(&agent_id) {
             // gist does not exist for this agent
             // create a new gist for this agent
             let req: HttpRequest = HttpRequest {
@@ -174,7 +159,7 @@ fn send(_params: json::Value) -> Result<Output, Error> {
                 method: Some("POST".to_string()),
                 headers: BTreeMap::from([
                     ("Accept".to_string(), "application/vnd.github+json".to_string()),
-                    ("Authorization".to_string(), format!("Bearer {}", p.api_key)),
+                    ("Authorization".to_string(), format!("Bearer {}", params.api_key)),
                     ("X-GitHub-Api-Version".to_string(), "2022-11-28".to_string()),
                 ]),
             };
@@ -183,9 +168,9 @@ fn send(_params: json::Value) -> Result<Output, Error> {
                 now_time = clock_time_get(CLOCKID_REALTIME, 0).unwrap();
             }
             let body: String = format!("{{\"description\": \"{}\", \"public\": false, \"files\": {{\"{}\": {{\"content\": \"{}\"}}}}}}",
-                p.agent_id, 
-                now_time, 
-                p.message
+                agent_id,
+                now_time,
+                msg
             );
             let resp: HttpResponse = http::request::<String>(&req, Some(body))
                 .unwrap();
@@ -200,13 +185,13 @@ fn send(_params: json::Value) -> Result<Output, Error> {
         }
     }
     // if the agent is in the map, patch the gist with the message
-    let gist_id: String = nodes.get(&p.agent_id).unwrap().to_string();
+    let gist_id: String = nodes.get(&agent_id).unwrap().to_string();
     let req: HttpRequest = HttpRequest {
         url: format!("https://api.github.com/gists/{}", gist_id),
         method: Some("PATCH".to_string()),
         headers: BTreeMap::from([
             ("Accept".to_string(), "application/vnd.github+json".to_string()),
-            ("Authorization".to_string(), format!("Bearer {}", p.api_key)),
+            ("Authorization".to_string(), format!("Bearer {}", params.api_key)),
             ("X-GitHub-Api-Version".to_string(), "2022-11-28".to_string()),
         ]),
     };
@@ -217,7 +202,7 @@ fn send(_params: json::Value) -> Result<Output, Error> {
     let body: String = format!(
         "{{\"files\": {{\"{}\": {{\"content\": \"{}\"}}}}}}",
         now_time,
-        p.message
+        msg
     );
     let _resp: HttpResponse = http::request::<String>(&req, Some(body))
         .unwrap();
